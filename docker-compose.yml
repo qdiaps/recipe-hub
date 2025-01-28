@@ -1,0 +1,41 @@
+﻿services:
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - mysql
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/frontend:/usr/share/nginx/html
+    depends_on:
+      - backend
+
+  mysql:
+    container_name: mysql
+    image: mysql:9.2.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+  phpMyAdmin:
+    container_name: phpMyAdmin
+    image: phpmyadmin:latest
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
