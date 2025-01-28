@@ -40,4 +40,9 @@ class Database
             implode(", ", $values) . ")");
         $stmt->execute();
     }
+
+    public function getPdo(): PDO
+    {
+        return $this->pdo;
+    }
 }

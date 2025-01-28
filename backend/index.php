@@ -7,8 +7,10 @@ require_once "src/routes/delete_api.php";
 require_once "src/routes/get_api.php";
 require_once "src/routes/post_api.php";
 require_once "src/routes/put_api.php";
+require_once "src/controllers/RecipeController.php";
 
 use DB\Database;
+use controllers\RecipeController;
 
 $db_config_path = "mysql.ini";
 $db = new Database($db_config_path);
@@ -27,11 +29,12 @@ if (!$db->tableExists($settings["database"]["table"]))
 
 $request_method = $_SERVER["REQUEST_METHOD"];
 $request_uri = $_SERVER["REQUEST_URI"];
+$controller = new RecipeController($db, $settings);
 
 switch ($request_method)
 {
     case "GET":
-        handle_get_api($request_uri);
+        handle_get_api($request_uri, $controller);
         break;
     case "POST":
         handle_post_api($request_uri);

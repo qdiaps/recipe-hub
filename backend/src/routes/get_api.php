@@ -2,12 +2,12 @@
 
 require_once "utils.php";
 
-function handle_get_api(string $uri): void
+use controllers\RecipeController;
+
+function handle_get_api(string $uri, RecipeController $controller): void
 {
     if ($uri == "/recipes")
-    {
-        echo(json_encode(["message" => "Good"]));
-    }
+        echo(json_encode($controller->getAllRecipes()));
     else
         send_not_found_response();
 }
