@@ -26,4 +26,18 @@ class Database
             die($e->getMessage());
         }
     }
+
+    public function tableExists(string $name): bool
+    {
+        $stmt = $this->pdo->prepare("SHOW TABLES LIKE :name");
+        $stmt->execute([":name" => $name]);
+        return $stmt->rowCount() > 0;
+    }
+
+    public function createTable(string $name, array $values): void
+    {
+        $stmt = $this->pdo->prepare("CREATE TABLE IF NOT EXISTS $name (" .
+            implode(", ", $values) . ")");
+        $stmt->execute();
+    }
 }
