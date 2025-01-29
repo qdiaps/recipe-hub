@@ -37,7 +37,7 @@ switch ($request_method)
         handle_get_api($request_uri, $controller);
         break;
     case "POST":
-        handle_post_api($request_uri);
+        handle_post_api($request_uri, $controller);
         break;
     case "PUT":
         handle_put_api($request_uri);

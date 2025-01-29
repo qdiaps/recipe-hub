@@ -36,8 +36,8 @@ newRecipeForm.addEventListener("submit", (e) => {
     const title = document.getElementById("title").value;
     const ingredients = document.getElementById("ingredients").value;
     const instructions = document.getElementById("instructions").value;
-    const cook_time = document.getElementById("cook_time").value;
-    const category = document.getElementById("category").value;
+    const cook_time = document.getElementById("cook_time").value || null;
+    const category = document.getElementById("category").value || null;
 
     const newRecipe = {
         title,
@@ -46,12 +46,17 @@ newRecipeForm.addEventListener("submit", (e) => {
         cook_time,
         category,
     };
-    console.log(newRecipe);
-    // POST /api/recipes
-
-    loadRecipes();
-    recipeForm.style.display = "none";
-    addRecipeBtn.hidden = false;
+    fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newRecipe),
+    })
+        .then(() => {
+            loadRecipes();
+            recipeForm.style.display = "none";
+            addRecipeBtn.hidden = false;
+        })
+        .catch(error => console.error("Error adding recipe: ", error));
 });
 
 addRecipeBtn.addEventListener("click", () => {

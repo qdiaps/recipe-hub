@@ -2,11 +2,14 @@
 
 require_once "utils.php";
 
-function handle_post_api(string $uri): void
+use controllers\RecipeController;
+
+function handle_post_api(string $uri, RecipeController $controller): void
 {
-    if ($uri == "/recipes")
+    if ($uri == "/recipes" && $_SERVER["CONTENT_TYPE"] == "application/json")
     {
-        echo(json_encode(["message" => "Good"]));
+        $json = file_get_contents("php://input");
+        $controller->addRecipe(json_decode($json, true));
     }
     else
         send_not_found_response();

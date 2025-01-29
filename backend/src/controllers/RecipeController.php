@@ -21,4 +21,18 @@ class RecipeController
         return $this->pdo->query("SELECT * FROM " . $this->dbconfig["database"]["table"])
             ->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function addRecipe(array $data): void
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO " . $this->dbconfig["database"]["table"] .
+            " (title, ingredients, instructions, cook_time, category)
+            VALUES (:title, :ingredients, :instructions, :cook_time, :category)");
+        $stmt->execute([
+            ":title" => $data["title"],
+            ":ingredients" => $data["ingredients"],
+            ":instructions" => $data["instructions"],
+            ":cook_time" => $data["cook_time"],
+            ":category" => $data["category"]
+        ]);
+    }
 }
