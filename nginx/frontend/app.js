@@ -22,9 +22,30 @@ function loadRecipes() {
                             <p><strong>Category:</strong> ${recipe.category || "N/A"}</p>
                             <p><strong>Cook time:</strong> ${recipe.cook_time || "N/A"} minutes</p>
                             <p><strong>Instructions:</strong> ${recipe.instructions || "N/A"}</p>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${recipe.id}">Delete</button>
+                            <button class="btn btn-warning btn-sm edit-btn" data-id="${recipe.id}">Edit</button>
                         </div>
                     </div>`;
                 recipeList.appendChild(recipeCard);
+
+                const deleteBtn = recipeCard.querySelector(".delete-btn");
+                const editBtn = recipeCard.querySelector(".edit-btn");
+
+                deleteBtn.addEventListener("click", () => {
+                    const id = deleteBtn.getAttribute("data-id");
+                    if (confirm("Are you sure you want to delete this recipe?")) {
+                        fetch(`${apiUrl}/${id}`, { method: "DELETE" })
+                            .then(response => {
+                                if (response.ok)
+                                    recipeCard.remove();
+                            })
+                    }
+                })
+
+                editBtn.addEventListener("click", () => {
+                    const id = editBtn.getAttribute("data-id");
+                    console.log(`open edit form, id: ${id}`);
+                })
             });
         })
         .catch(error => console.error("Error fetching recipes: ", error));
