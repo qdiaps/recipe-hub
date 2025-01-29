@@ -43,6 +43,6 @@ switch ($request_method)
         handle_put_api($request_uri);
         break;
     case "DELETE":
-        handle_delete_api($request_uri);
+        handle_delete_api($request_uri, $controller);
         break;
 }

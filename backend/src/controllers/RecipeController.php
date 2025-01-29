@@ -35,4 +35,11 @@ class RecipeController
             ":category" => $data["category"]
         ]);
     }
+
+    public function deleteRecipe(int $id): void
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM " . $this->dbconfig["database"]["table"] .
+            " WHERE id = :id");
+        $stmt->execute([":id" => $id]);
+    }
 }

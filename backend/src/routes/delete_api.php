@@ -2,12 +2,12 @@
 
 require_once "utils.php";
 
-function handle_delete_api(string $uri): void
+use controllers\RecipeController;
+
+function handle_delete_api(string $uri, RecipeController $controller): void
 {
     if (preg_match("/^\/recipes\/(\d+)$/", $uri, $matches))
-    {
-        echo(json_encode(["message" => "Good"]));
-    }
+        $controller->deleteRecipe($matches[1]);
     else
         send_not_found_response();
 }
