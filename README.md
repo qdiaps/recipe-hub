@@ -39,14 +39,14 @@ This project is an educational pet project designed to practice CRUD functionali
 3. Open a browser and go to the website `localhost`
 ### Initialize MySQL
 Why: Creates a table in MySQL and populates it with the original data
-- **Linux**:
+- **Windows**:
 ```
 ~ $ python -m venv venv
 ~ $ .\venv\Scripts\activate.bat
 ~ $ pip install -r requirements.txt
 ~ $ python initdb.py
 ```
-- **Windows**:
+- **Linux**:
 ```
 ~ $ python -m venv venv
 ~ $ source venv/bin/activate
