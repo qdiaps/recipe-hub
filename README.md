@@ -21,7 +21,7 @@ This project is an educational pet project designed to practice CRUD functionali
   - [Reverse proxy](#reverse-proxy)
 
 ## Technology
-- Frontend: HTML, CSS, JavaScript, Bootstap
+- Frontend: HTML, CSS, JavaScript, Bootstrap
 - Backend: PHP, Apache, REST API
 - Database: MySQL, PhpMyAdmin
 - Containerization: Docker, Docker Compose
