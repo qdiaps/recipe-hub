@@ -6,6 +6,69 @@ const recipeForm = document.getElementById("recipe-form");
 const cancelBtn = document.getElementById("cancel-btn");
 const newRecipeForm = document.getElementById("new-recipe-form");
 
+let isEditingRecipe = false;
+
+function openEditRecipeForm(id, card, cardData) {
+    if (isEditingRecipe)
+        return;
+    isEditingRecipe = true;
+    const form = document.createElement("div");
+    form.classList.add("edit-recipe-container", "mt-4", "mb-4");
+    form.innerHTML = `
+        <h2>Edit Recipe</h2>
+        <form id="edit-recipe-form">
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" value="${cardData.title}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="ingredients">Ingredients</label>
+                <textarea class="form-control" id="ingredients" rows="3" required>${cardData.ingredients}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="instructions">Instructions</label>
+                <textarea class="form-control" id="instructions" rows="3" required>${cardData.instructions}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="cook_time">Cook time (minutes)</label>
+                <input class="form-control" type="number" id="cook_time" value="${cardData.cook_time || ''}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="category">Category</label>
+                <input class="form-control" type="text" id="category" value="${cardData.category || ''}">
+            </div>
+            <button class="btn btn-success" type="button">Submit</button>
+            <button class="btn btn-secondary" type="button">Cancel</button>
+        </form>
+    `;
+    card.insertAdjacentElement("afterend", form);
+
+    const submitBtn = form.querySelector(".btn-success");
+    const cancelBtn = form.querySelector(".btn-secondary");
+
+    submitBtn.addEventListener("click", () => {
+        const editRecipe = {
+            title: document.getElementById("title").value,
+            ingredients: document.getElementById("ingredients").value,
+            instructions: document.getElementById("instructions").value,
+            cook_time: document.getElementById("cook_time").value || null,
+            category: document.getElementById("category").value || null,
+        };
+
+        fetch(`${apiUrl}/${id}`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(editRecipe),
+        })
+            .then(() => { location.reload() });
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        isEditingRecipe = false;
+        form.remove();
+    });
+}
+
 function loadRecipes() {
     fetch(apiUrl)
         .then(response => response.json())
@@ -44,7 +107,7 @@ function loadRecipes() {
 
                 editBtn.addEventListener("click", () => {
                     const id = editBtn.getAttribute("data-id");
-                    console.log(`open edit form, id: ${id}`);
+                    openEditRecipeForm(id, recipeCard, recipe);
                 })
             });
         })
@@ -54,18 +117,12 @@ function loadRecipes() {
 newRecipeForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const title = document.getElementById("title").value;
-    const ingredients = document.getElementById("ingredients").value;
-    const instructions = document.getElementById("instructions").value;
-    const cook_time = document.getElementById("cook_time").value || null;
-    const category = document.getElementById("category").value || null;
-
     const newRecipe = {
-        title,
-        ingredients,
-        instructions,
-        cook_time,
-        category,
+        title: document.getElementById("title").value,
+        ingredients: document.getElementById("ingredients").value,
+        instructions: document.getElementById("instructions").value,
+        cook_time: document.getElementById("cook_time").value || null,
+        category: document.getElementById("category").value || null,
     };
     fetch(apiUrl, {
         method: "POST",

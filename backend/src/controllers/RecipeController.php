@@ -42,4 +42,19 @@ class RecipeController
             " WHERE id = :id");
         $stmt->execute([":id" => $id]);
     }
+
+    public function updateRecipe(int $id, array $data): void
+    {
+        $stmt = $this->pdo->prepare("UPDATE " . $this->dbconfig["database"]["table"] .
+            " SET title = :title, ingredients = :ingredients, instructions = :instructions, 
+            cook_time = :cook_time, category = :category WHERE id = :id");
+        $stmt->execute([
+            ":title" => $data["title"],
+            ":ingredients" => $data["ingredients"],
+            ":instructions" => $data["instructions"],
+            ":cook_time" => $data["cook_time"],
+            ":category" => $data["category"],
+            ":id" => $id
+        ]);
+    }
 }
